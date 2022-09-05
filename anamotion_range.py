@@ -71,10 +71,11 @@ class class_analysis_mo_ra:
 
     def fun_analysis_range(self,rangefield):
         print('-r actived. start range analysis, dat file written in ./range_ana_logs/02_range_ana.dat')
-        writedata='start write data for motion states: 0 '
-        for a in self.statelist:
-            writedata += a+' '
-        writedata += '\n'
+        writedata=''
+        # writedata='start write data for motion states: 0 '
+        # for a in self.statelist:
+        #     writedata += a+' '
+        # writedata += '\n'
 
         relate_funs.writelog(self.path2_range_log, 'Start a new range analysis')
         # write log
