@@ -30,10 +30,11 @@ class class_analysis_mo_ra:
 
     def fun_analysis_motion(self,motionlist):  # dose_shown_in_gd is the dose written in the exec file, for SPHIC momi cases this value was set to 3 for all plans.
         print('-m actived. start motion analysis, dat file written in ./motion_ana_logs/00_motion_ana.dat')
-        writedata='start write data for motion states: '
-        for a in self.statelist:
-            writedata += a+' '
-        writedata += '\n'
+        writedata=''
+        # writedata='start write data for motion states: '
+        # for a in self.statelist:
+        #     writedata += a+' '
+        # writedata += '\n'
 
         relate_funs.writelog(self.path2_motion_log, 'Start a new motion analysis')
         writeloginfo = 'running patient: ' + self.patientID + ' plan: ' + self.planname
