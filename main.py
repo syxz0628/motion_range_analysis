@@ -15,7 +15,7 @@ if __name__=="__main__":
     parser.add_argument("-r", "--rangefield", required=False, help="analysis range for which field name?")
     parser.add_argument("-s", "--statelist", required=True, help="which state to analysis motion and/or range <for range ana, state 0 is forced to analysis>")
     parser.add_argument("-l","--path2analog", required=False, help="path to motion range analysis log file")
-    parser.add_argument("-n","--savename", required=False, help="txt file save to name")
+    parser.add_argument("-n","--savename", required=False, help="txt file save to name"
     #parser.add_argument("-t", "--timeoffset", required=False, type=int, nargs='+',
     #                    help="Time offset in msec,to adjust results in ~250ms level that was added to system determined timeoffset value;multiple values are acceptable, e.g. -t 250 -250 100",
     #                    default=250)
