@@ -18,8 +18,8 @@ class class_analysis_mo_ra:
 
         self.path2_motion_savefile = './motion_ana_logs/'
         self.path2_range_savefile = './range_ana_logs/'
-        self.path2_motion_log = self.path2_motion_savefile+'00_mo_ra_ana_processing.log'
-        self.path2_range_log = self.path2_range_savefile+'00_mo_ra_ana_processing.log'
+        self.path2_motion_log = self.path2_motion_savefile+'00_motion_ana_processing.log'
+        self.path2_range_log = self.path2_range_savefile+'00_range_ana_processing.log'
 
         # self.path2_motion_savefile = '/home/yurii/Sheng/patient_data/'
         # self.path2_range_savefile = '/home/yurii/Sheng/patient_data/'
