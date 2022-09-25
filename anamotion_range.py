@@ -143,8 +143,9 @@ class class_analysis_mo_ra:
                 dataline+=1
                 if 'getH2Orange' in data_to_ana:
                     data_to_ana_list=data_to_ana.split()
-                    if 'field '+fieldname in data_to_ana_list:
+                    if fieldname in data_to_ana_list:
                         startline=dataline
+                        endline=startline+13
                 if startline!=0 and '<TIME>' in data_to_ana:
                     endline=dataline
                     break
