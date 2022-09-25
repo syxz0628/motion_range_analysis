@@ -71,8 +71,9 @@ class class_analysis_mo_ra:
         writeloginfo = 'running patient: ' + self.patientID + ' plan: ' + self.planname
         relate_funs.writelog(self.path2_range_log, writeloginfo)
         # write analysis data
-        writedata += self.patientID + ' ' + self.planname+' field '
+
         for fieldname in rangefield:
+            writedata += self.patientID + ' ' + self.planname + ' field'
             writedata += fieldname
             # write 3D plan range info for field N
             average_range3D1, standerror_range3D1 = self.fun_3Drange_info(fieldname,self.path2_3Danalog1)
