@@ -15,8 +15,8 @@ class class_analysis_mo_ra:
         if self.savename==None:
             self.savename=''
 
-        self.path2_motion_savefile = './motion_ana_logs/'
-        self.path2_range_savefile = './range_ana_logs/'
+        self.path2_motion_savefile = '.Analysis_logs/motion_ana_logs/'
+        self.path2_range_savefile = '.Analysis_logs/range_ana_logs/'
         self.path2_motion_log = self.path2_motion_savefile+'00_motion_ana_processing.log'
         self.path2_range_log = self.path2_range_savefile+'00_range_ana_processing.log'
 
