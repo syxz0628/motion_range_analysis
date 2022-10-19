@@ -52,7 +52,6 @@ class class_analysis_mo_ra:
                 writedata += self.patientID + ' ' + self.planname + ' ' + oarname
                 for statename in self.statelist:
                     #writedata+=' state'+statename+' '
-                    print('checking:',path2planmotionlogfile,' OK')
                     motiondata = self.fun_motion_info(path2planmotionlogfile,oarname, statename)
                     if motiondata==' 9999':
                         errorinfo='motion states wrongly defined. Please check.'
