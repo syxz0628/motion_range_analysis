@@ -34,6 +34,7 @@ if __name__=="__main__":
         logdimlist = args.logdim.split(',')
         rangefield = args.rangefield.split(',')
         statelist = args.statelist.split(',')
+        print('FFFFFFFok')
     except:
         pass
     save2name=args.savename
