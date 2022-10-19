@@ -13,9 +13,9 @@ if __name__=="__main__":
     parser.add_argument("-p","--planname", required=False, help="name of the specific plan")
     parser.add_argument("-lp", "--logpath", required=False, help="path of the log file?(exp: ./1.log,./2.log,./3.log)")
     parser.add_argument("-ld", "--logdim", required=False, help="the log file is 3D or 4D?(exp: 3D,4D,4D)")
-    parser.add_argument("-m","--motionlist", required=True, help="Target/OAR name list to be analysised for motion")
-    parser.add_argument("-r", "--rangefield", required=False, help="analysis range for which field name?")
-    parser.add_argument("-s", "--statelist", required=True, help="which state to analysis motion and/or range <for range ana, state 0 is forced to analysis>")
+    parser.add_argument("-m","--motionlist", required=False, help="Target/OAR name list to be analysised for motion")
+    parser.add_argument("-r", "--rangefield", required=True, help="analysis range for which field name?")
+    parser.add_argument("-s", "--statelist", required=False, help="which state to analysis motion and/or range <for range ana, state 0 is forced to analysis>")
     parser.add_argument("-sn","--savename", required=False, help="additional save to file name")
     parser.add_argument("-sp", "--save2path", required=False, help="path of save to file")
     #parser.add_argument("-t", "--timeoffset", required=False, type=int, nargs='+',
