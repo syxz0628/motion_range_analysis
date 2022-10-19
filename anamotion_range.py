@@ -1,12 +1,13 @@
 import relate_funs
 import sys
 class class_analysis_mo_ra:
-    def __init__(self, patientID,planname,loglist,logdimlist,statelist,save2path,save2name):
+    def __init__(self, patientID,planname,loglist,logdimlist,statelist,save2path1,save2path2,save2name):
         self.patientID=patientID
         self.planname=planname
         self.statelist=statelist
         self.savename=save2name
-        self.save2path=save2path
+        self.save2rangepath=save2path1
+        self.save2motionpath = save2path2
         self.loglist=loglist
         self.logdimlist=logdimlist
         #
@@ -19,13 +20,11 @@ class class_analysis_mo_ra:
         #     print('error input, check if you have input the path to TRiPlog or patient ID and plan name')
         if self.savename==None:
             self.savename=''
-        if self.save2path==None:
-            self.save2path = './'
+        if self.save2motionpath==None:
+            self.save2motionpath = './'
 
-        self.path2_motion_savefile = self.save2path+'motion_ana_logs/'
-        self.path2_range_savefile = self.save2path+'range_ana_logs/'
-        self.path2_motion_log = self.path2_motion_savefile+'00_motion_ana_processing.log'
-        self.path2_range_log = self.path2_range_savefile+'00_range_ana_processing.log'
+        self.path2_motion_log = self.save2motionpath+'00_motion_ana_processing.log'
+        self.path2_range_log = self.save2rangepath+'00_range_ana_processing.log'
 
         self.voilist = []
         self.writelinesinfo=[]
@@ -59,7 +58,7 @@ class class_analysis_mo_ra:
                     writedata += motiondata
                 writedata += '\n'
         # save info and analysis data
-        save_motion_filename=self.path2_motion_savefile+self.patientID+'_'+self.planname+'_'+self.savename+'_motion.txt'
+        save_motion_filename=self.save2motionpath+self.patientID+'_'+self.planname+'_'+self.savename+'_motion.txt'
         with open(save_motion_filename, 'w+') as savefileinfo:
             # savefileinfo.writelines('patientID plan VOI volume pre_dose parameter 3D 4D1 4D2 4D3 ...')
             savefileinfo.writelines(writedata)
@@ -108,7 +107,7 @@ class class_analysis_mo_ra:
             writedata += '\n'
 
         # save info and analysis data
-        save_range_filename = self.path2_range_savefile + self.patientID + '_' + self.planname + '_' + self.savename + '_range.txt'
+        save_range_filename = self.save2rangepath + self.patientID + '_' + self.planname + '_' + self.savename + '_range.txt'
         with open(save_range_filename, 'w+') as savefileinfo:
             # savefileinfo.writelines('patientID plan VOI volume pre_dose parameter 3D 4D1 4D2 4D3 ...')
             savefileinfo.writelines(writedata)

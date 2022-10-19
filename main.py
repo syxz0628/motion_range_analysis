@@ -17,7 +17,8 @@ if __name__=="__main__":
     parser.add_argument("-r", "--rangefield", required=True, help="analysis range for which field name?")
     parser.add_argument("-s", "--statelist", required=False, help="which state to analysis motion and/or range <for range ana, state 0 is forced to analysis>")
     parser.add_argument("-sn","--savename", required=False, help="additional save to file name")
-    parser.add_argument("-sp", "--save2path", required=False, help="path of save to file")
+    parser.add_argument("-spr", "--save2rangepath", required=True, help="path of save to range file")
+    parser.add_argument("-spm", "--save2motionpath", required=False, help="path of save to motion file")
     #parser.add_argument("-t", "--timeoffset", required=False, type=int, nargs='+',
     #                    help="Time offset in msec,to adjust results in ~250ms level that was added to system determined timeoffset value;multiple values are acceptable, e.g. -t 250 -250 100",
     #                    default=250)
@@ -55,10 +56,11 @@ if __name__=="__main__":
         statelist.append(args.statelist)
 
     save2name=args.savename
-    save2path=args.save2path
+    save2rangepath = args.save2rangepath
+    save2motionpath = args.save2motionpath
 
 # call analysis_gd function
-    analysis_mo_ra_data=anamotion_range.class_analysis_mo_ra(patientID,planname,loglist,logdimlist,statelist,save2path,save2name)
+    analysis_mo_ra_data=anamotion_range.class_analysis_mo_ra(patientID,planname,loglist,logdimlist,statelist,save2rangepath,save2motionpath,save2name)
     if ( motionlist!=None):
         analysis_mo_ra_data.fun_analysis_motion(motionlist)
     if ( rangefield!=None):
