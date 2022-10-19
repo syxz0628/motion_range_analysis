@@ -28,11 +28,14 @@ if __name__=="__main__":
 # define mandatory parameters.
     patientID=args.patientID
     planname=args.planname
-    motionlist = args.motionlist.split(',')
-    loglist=args.logpath.split(',')
-    logdimlist = args.logdim.split(',')
-    rangefield = args.rangefield.split(',')
-    statelist = args.statelist.split(',')
+    try:
+        motionlist = args.motionlist.split(',')
+        loglist=args.logpath.split(',')
+        logdimlist = args.logdim.split(',')
+        rangefield = args.rangefield.split(',')
+        statelist = args.statelist.split(',')
+    except:
+        pass
     save2name=args.savename
     save2path=args.save2path
 
