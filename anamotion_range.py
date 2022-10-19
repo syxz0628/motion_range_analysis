@@ -1,4 +1,5 @@
 import relate_funs
+import sys
 class class_analysis_mo_ra:
     def __init__(self, patientID,planname,loglist,logdimlist,statelist,save2path,save2name):
         self.patientID=patientID
@@ -31,32 +32,41 @@ class class_analysis_mo_ra:
 
     def fun_analysis_motion(self,motionlist):  # dose_shown_in_gd is the dose written in the exec file, for SPHIC momi cases this value was set to 3 for all plans.
         print('-m actived. start motion analysis, dat file written in ./motion_ana_logs/00_motion_ana.dat')
+        path2planmotionlogs = []
+        if not ('4D' in self.logdimlist):
+            writeloginfo='no 4D motion file found, please check'
+            relate_funs.writelog(self.path2_motion_log, writeloginfo)
+            sys.exit()
+        for i in range(0,len(self.loglist)):
+            if '4D' in self.logdimlist[i]:
+                path2planmotionlogs.append(self.loglist[i])
+
         writedata=''
         relate_funs.writelog(self.path2_motion_log, 'Start a new motion analysis')
         writeloginfo = 'running patient: ' + self.patientID + ' plan: ' + self.planname
         relate_funs.writelog(self.path2_motion_log, writeloginfo)
+
         # write analysis data
-
-
-        for oarname in motionlist:
-            writedata += self.patientID + ' ' + self.planname + ' ' + oarname
-            for statename in self.statelist:
-                #writedata+=' state'+statename+' '
-                motiondata = self.fun_motion_info(oarname, statename)
-                if motiondata==' 9999':
-                    errorinfo='either motion states or oarname wrongly defined. Please check.'
-                    relate_funs.writelog(self.path2_motion_log, errorinfo)
-                writedata += motiondata
-            writedata += '\n'
+        for path2planmotionlogfile in path2planmotionlogs:
+            for oarname in motionlist:
+                writedata += self.patientID + ' ' + self.planname + ' ' + oarname
+                for statename in self.statelist:
+                    #writedata+=' state'+statename+' '
+                    motiondata = self.fun_motion_info(path2planmotionlogfile,oarname, statename)
+                    if motiondata==' 9999':
+                        errorinfo='either motion states or oarname wrongly defined. Please check.'
+                        relate_funs.writelog(self.path2_motion_log, errorinfo)
+                    writedata += motiondata
+                writedata += '\n'
         # save info and analysis data
         save_motion_filename=self.path2_motion_savefile+self.patientID+'_'+self.planname+'_'+self.savename+'_motion.txt'
         with open(save_motion_filename, 'w+') as savefileinfo:
             # savefileinfo.writelines('patientID plan VOI volume pre_dose parameter 3D 4D1 4D2 4D3 ...')
             savefileinfo.writelines(writedata)
 
-    def fun_motion_info(self,oarname,motionstate):
+    def fun_motion_info(self,path2planmotionlog,oarname,motionstate):
         average_motion=' 9999'
-        with open (self.path2analog,'r') as mo_ran_log_to_ana:
+        with open (path2planmotionlog,'r') as mo_ran_log_to_ana:
             for data_to_ana in mo_ran_log_to_ana:
                 data_to_ana_list=data_to_ana.split()
                 determin_state='ref to state '+motionstate
