@@ -70,9 +70,10 @@ class class_analysis_mo_ra:
         with open(path2planmotionlog,'r') as mo_ran_log_to_ana:
             for data_to_ana in mo_ran_log_to_ana:
                 data_to_ana_list=data_to_ana.split()
-                print(data_to_ana_list)
+                print(data_to_ana)
                 determin_state='ref to state '+motionstate
                 if determin_state in data_to_ana:
+                    print('find')
                     if oarname in data_to_ana_list:
                         average_motion=data_to_ana[data_to_ana.rfind(':')+1:-3]
         return average_motion
