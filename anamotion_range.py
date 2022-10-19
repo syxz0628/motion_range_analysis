@@ -54,7 +54,7 @@ class class_analysis_mo_ra:
                     #writedata+=' state'+statename+' '
                     motiondata = self.fun_motion_info(path2planmotionlogfile,oarname, statename)
                     if motiondata==' 9999':
-                        errorinfo='either motion states or oarname wrongly defined. Please check.'
+                        errorinfo='motion states wrongly defined. Please check.'
                         relate_funs.writelog(self.path2_motion_log, errorinfo)
                     writedata += motiondata
                 writedata += '\n'
@@ -66,7 +66,7 @@ class class_analysis_mo_ra:
 
     def fun_motion_info(self,path2planmotionlog,oarname,motionstate):
         average_motion=' 9999'
-        with open (path2planmotionlog,'r') as mo_ran_log_to_ana:
+        with open(path2planmotionlog,'r') as mo_ran_log_to_ana:
             for data_to_ana in mo_ran_log_to_ana:
                 data_to_ana_list=data_to_ana.split()
                 determin_state='ref to state '+motionstate
