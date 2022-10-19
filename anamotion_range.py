@@ -1,29 +1,31 @@
 import relate_funs
 class class_analysis_mo_ra:
-    def __init__(self, patientID,planname,statelist,save2name):
+    def __init__(self, patientID,planname,loglist,logdimlist,statelist,save2path,save2name):
         self.patientID=patientID
         self.planname=planname
         self.statelist=statelist
         self.savename=save2name
-        if patientID!=None and planname!=None:
-            self.path2analog='/u/ysheng/MyAIXd/projects/patients/'+self.patientID+'/4DdoseRecon/exec/'+self.planname+'/'+self.planname+'_motion_range_ana.log'
-            self.path2_3Danalog1 = '/u/ysheng/MyAIXd/projects/patients/' + self.patientID + '/3Ddose/exec/' + self.planname + '/Range_assigned.log'
-            self.path2_3Danalog2 = '/u/ysheng/MyAIXd/projects/patients/' + self.patientID + '/3Ddose/exec/' + self.planname + '/Range_noassign.log'
-            print(self.path2analog)
-        else:
-            print('error input, check if you have input the path to TRiPlog or patient ID and plan name')
+        self.save2path=save2path
+        self.loglist=loglist
+        self.logdimlist=logdimlist
+        #
+        # if patientID!=None and planname!=None:
+        #     self.path2analog='/u/ysheng/MyAIXd/projects/patients/'+self.patientID+'/4DdoseRecon/exec/'+self.planname+'/'+self.planname+'_motion_range_ana.log'
+        #     self.path2_3Danalog1 = '/u/ysheng/MyAIXd/projects/patients/' + self.patientID + '/3Ddose/exec/' + self.planname + '/Range_assigned.log'
+        #     self.path2_3Danalog2 = '/u/ysheng/MyAIXd/projects/patients/' + self.patientID + '/3Ddose/exec/' + self.planname + '/Range_noassign.log'
+        #     print(self.path2analog)
+        # else:
+        #     print('error input, check if you have input the path to TRiPlog or patient ID and plan name')
         if self.savename==None:
             self.savename=''
+        if self.save2path==None:
+            self.save2path = './'
 
-        self.path2_motion_savefile = '.Analysis_logs/motion_ana_logs/'
-        self.path2_range_savefile = '.Analysis_logs/range_ana_logs/'
+        self.path2_motion_savefile = self.save2path+'motion_ana_logs/'
+        self.path2_range_savefile = self.save2path+'range_ana_logs/'
         self.path2_motion_log = self.path2_motion_savefile+'00_motion_ana_processing.log'
         self.path2_range_log = self.path2_range_savefile+'00_range_ana_processing.log'
 
-        # self.path2_motion_savefile = '/home/yurii/Sheng/patient_data/'
-        # self.path2_range_savefile = '/home/yurii/Sheng/patient_data/'
-        # self.path2_motion_log='/home/yurii/Sheng/patient_data/'+'00_mo_ra_ana_processing.log'
-        # self.path2_range_log='/home/yurii/Sheng/patient_data/'+'00_mo_ra_ana_processing.log'
         self.voilist = []
         self.writelinesinfo=[]
 
@@ -75,33 +77,38 @@ class class_analysis_mo_ra:
         for fieldname in rangefield:
             writedata += self.patientID + ' ' + self.planname + ' field'
             writedata += fieldname
-            # write 3D plan range info for field N
-            average_range3D1, standerror_range3D1 = self.fun_3Drange_info(fieldname,self.path2_3Danalog1)
-            average_range3D2, standerror_range3D2 = self.fun_3Drange_info(fieldname, self.path2_3Danalog2)
-            writedata += average_range3D1 + standerror_range3D1
-            writedata += average_range3D2 + standerror_range3D2
-            # write 4D range info for field N
-            average_range0, standerror_range0 = self.fun_range_info(fieldname, '0')
-            writedata += average_range0 + standerror_range0
-            for statename in self.statelist:
-                average_range,standerror_range = self.fun_range_info(fieldname, statename)
-                if average_range == '9999' or standerror_range == '9999':
-                    errorinfo = 'either motion states or Field name wrongly defined. Please check.'
+            for logfileNo in range(0,len(self.loglist)):
+                if self.logdimlist[logfileNo]=='3D':
+                # write 3D plan range info for field N
+                    average_range3D, standerror_range3D = self.fun_3Drange_info(fieldname,self.loglist[logfileNo])
+                    writedata += average_range3D + standerror_range3D
+                # write 4D range info for field N
+                elif self.logdimlist[logfileNo]=='4D':
+                    average_range0, standerror_range0 = self.fun_4Drange_info(fieldname,self.loglist[logfileNo], '0')
+                    writedata += average_range0 + standerror_range0
+                    for statename in self.statelist:
+                        average_range,standerror_range = self.fun_4Drange_info(fieldname,self.loglist[logfileNo], statename)
+                        if average_range == '9999' or standerror_range == '9999':
+                            errorinfo = 'either motion states or Field name wrongly defined. Please check.'
+                            relate_funs.writelog(self.path2_range_log, errorinfo)
+                        writedata += average_range+standerror_range
+                else:
+                    errorinfo = 'logfile dimension not known!'
                     relate_funs.writelog(self.path2_range_log, errorinfo)
-                writedata += average_range+standerror_range
             writedata += '\n'
+
         # save info and analysis data
         save_range_filename = self.path2_range_savefile + self.patientID + '_' + self.planname + '_' + self.savename + '_range.txt'
         with open(save_range_filename, 'w+') as savefileinfo:
             # savefileinfo.writelines('patientID plan VOI volume pre_dose parameter 3D 4D1 4D2 4D3 ...')
             savefileinfo.writelines(writedata)
 
-    def fun_range_info(self,fieldname, statename):
+    def fun_4Drange_info(self,fieldname,path2_4Danalog,statename):
         average_range='9999'
         standerror_range='9999'
         startline=0
         endline=0
-        with open (self.path2analog,'r') as mo_ran_log_to_ana:
+        with open (path2_4Danalog,'r') as mo_ran_log_to_ana:
             datalineall=mo_ran_log_to_ana.readlines()
             dataline=0
             for data_to_ana in datalineall:

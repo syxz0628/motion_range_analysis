@@ -11,10 +11,13 @@ if __name__=="__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-i","--patientID", required=False, help="IDcd . of the patient")
     parser.add_argument("-p","--planname", required=False, help="name of the specific plan")
+    parser.add_argument("-lp", "--logpath", required=False, help="path of the log file?(exp: ./1.log,./2.log,./3.log)")
+    parser.add_argument("-ld", "--logdim", required=False, help="the log file is 3D or 4D?(exp: 3D,4D,4D)")
     parser.add_argument("-m","--motionlist", required=True, help="Target/OAR name list to be analysised for motion")
     parser.add_argument("-r", "--rangefield", required=False, help="analysis range for which field name?")
     parser.add_argument("-s", "--statelist", required=True, help="which state to analysis motion and/or range <for range ana, state 0 is forced to analysis>")
-    parser.add_argument("-n","--savename", required=False, help="txt file save to name")
+    parser.add_argument("-sn","--savename", required=False, help="additional save to file name")
+    parser.add_argument("-sp", "--save2path", required=False, help="path of save to file")
     #parser.add_argument("-t", "--timeoffset", required=False, type=int, nargs='+',
     #                    help="Time offset in msec,to adjust results in ~250ms level that was added to system determined timeoffset value;multiple values are acceptable, e.g. -t 250 -250 100",
     #                    default=250)
@@ -26,12 +29,15 @@ if __name__=="__main__":
     patientID=args.patientID
     planname=args.planname
     motionlist = args.motionlist.split(',')
+    loglist=args.logpath.split(',')
+    logdimlist = args.logdim.split(',')
     rangefield = args.rangefield.split(',')
     statelist = args.statelist.split(',')
     save2name=args.savename
+    save2path=args.save2path
 
 # call analysis_gd function
-    analysis_mo_ra_data=anamotion_range.class_analysis_mo_ra(patientID,planname,statelist,save2name)
+    analysis_mo_ra_data=anamotion_range.class_analysis_mo_ra(patientID,planname,loglist,logdimlist,statelist,save2path,save2name)
     if ( motionlist!=None):
         analysis_mo_ra_data.fun_analysis_motion(motionlist)
     if ( rangefield!=None):
