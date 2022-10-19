@@ -30,13 +30,30 @@ if __name__=="__main__":
     planname=args.planname
     try:
         motionlist = args.motionlist.split(',')
-        loglist=args.logpath.split(',')
-        logdimlist = args.logdim.split(',')
-        rangefield = args.rangefield.split(',')
-        statelist = args.statelist.split(',')
-        print('FFFFFFFok')
     except:
-        pass
+        motionlist = []
+        motionlist.append(args.motionlist)
+    try:
+        loglist=args.logpath.split(',')
+    except:
+        loglist=[]
+        loglist.append(args.logpath)
+    try:
+        logdimlist=args.logdim.split(',')
+    except:
+        logdimlist = []
+        logdimlist.append(args.logdim.split(','))
+    try:
+        rangefield=args.rangefield.split(',')
+    except:
+        rangefield=[]
+        rangefield.append(args.rangefield)
+    try:
+        statelist=args.statelist.split(',')
+    except:
+        statelist=[]
+        statelist.append(args.statelist)
+
     save2name=args.savename
     save2path=args.save2path
 
