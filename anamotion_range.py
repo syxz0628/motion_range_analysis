@@ -52,7 +52,7 @@ class class_analysis_mo_ra:
                 writedata += self.patientID + ' ' + self.planname + ' ' + oarname
                 for statename in self.statelist:
                     #writedata+=' state'+statename+' '
-                    print('checking:',path2planmotionlogfile)
+                    print('checking:',path2planmotionlogfile,' OK')
                     motiondata = self.fun_motion_info(path2planmotionlogfile,oarname, statename)
                     if motiondata==' 9999':
                         errorinfo='motion states wrongly defined. Please check.'
@@ -70,6 +70,7 @@ class class_analysis_mo_ra:
         with open(path2planmotionlog,'r') as mo_ran_log_to_ana:
             for data_to_ana in mo_ran_log_to_ana:
                 data_to_ana_list=data_to_ana.split()
+                print(data_to_ana_list)
                 determin_state='ref to state '+motionstate
                 if determin_state in data_to_ana:
                     if oarname in data_to_ana_list:
