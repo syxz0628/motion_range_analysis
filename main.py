@@ -14,10 +14,10 @@ if __name__=="__main__":
     parser.add_argument("-lp", "--logpath", required=False, help="path of the log file?(exp: ./1.log,./2.log,./3.log)")
     parser.add_argument("-ld", "--logdim", required=False, help="the log file is 3D or 4D?(exp: 3D,4D,4D)")
     parser.add_argument("-m","--motionlist", required=False, help="Target/OAR name list to be analysised for motion")
-    parser.add_argument("-r", "--rangefield", required=True, help="analysis range for which field name?")
+    parser.add_argument("-r", "--rangefield", required=False, help="analysis range for which field name?")
     parser.add_argument("-s", "--statelist", required=False, help="which state to analysis motion and/or range <for range ana, state 0 is forced to analysis>")
     parser.add_argument("-sn","--savename", required=False, help="additional save to file name")
-    parser.add_argument("-spr", "--save2rangepath", required=True, help="path of save to range file")
+    parser.add_argument("-spr", "--save2rangepath", required=False, help="path of save to range file")
     parser.add_argument("-spm", "--save2motionpath", required=False, help="path of save to motion file")
     #parser.add_argument("-t", "--timeoffset", required=False, type=int, nargs='+',
     #                    help="Time offset in msec,to adjust results in ~250ms level that was added to system determined timeoffset value;multiple values are acceptable, e.g. -t 250 -250 100",
@@ -29,11 +29,15 @@ if __name__=="__main__":
 # define mandatory parameters.
     patientID=args.patientID
     planname=args.planname
-    try:
-        motionlist = args.motionlist.split(',')
-    except:
-        motionlist = []
-        motionlist.append(args.motionlist)
+    if args.motionlist!=None:
+        try:
+            motionlist = args.motionlist.split(',')
+        except:
+            motionlist = []
+            motionlist.append(args.motionlist)
+    else:
+        motionlist = args.motionlist
+
     try:
         loglist=args.logpath.split(',')
     except:
@@ -44,11 +48,16 @@ if __name__=="__main__":
     except:
         logdimlist = []
         logdimlist.append(args.logdim.split(','))
-    try:
-        rangefield=args.rangefield.split(',')
-    except:
-        rangefield=[]
-        rangefield.append(args.rangefield)
+
+    if args.rangefield!=None:
+        try:
+            rangefield=args.rangefield.split(',')
+        except:
+            rangefield=[]
+            rangefield.append(args.rangefield)
+    else:
+        rangefield = args.rangefield
+
     try:
         statelist=args.statelist.split(',')
     except:
