@@ -37,7 +37,7 @@ class class_analysis_mo_ra:
         print('-m actived. start motion analysis, dat file written in ',self.save2motionpath)
         path2planmotionlogs = []
         find4Dlogs = [string for string in self.logdimlist if '4D' in string]
-        if bool(find4Dlogs):
+        if not(find4Dlogs):
             writeloginfo='no 4D motion file found, please check'
             relate_funs.writelog(self.path2_motion_processing_log, writeloginfo)
             sys.exit()
