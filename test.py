@@ -1,3 +1,4 @@
 data=['gGTVn','iGTVn']
-if 'GTVn' in data:
-    print('good')
+writedata = 'ID planname Organ States'
+my_string = ''.join('str'+x+' ' for x in data)
+print (my_string)

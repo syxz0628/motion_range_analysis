@@ -9,7 +9,7 @@ class class_analysis_mo_ra:
         self.save2rangepath=save2path1
         self.save2motionpath = save2path2
         self.loglist=loglist
-        self.logdimlist=logdimlist
+        self.logdimlist=logdimlist # 4D / 3D?
         #
         # if patientID!=None and planname!=None:
         #     self.path2analog='/u/ysheng/MyAIXd/projects/patients/'+self.patientID+'/4DdoseRecon/exec/'+self.planname+'/'+self.planname+'_motion_range_ana.log'
@@ -22,43 +22,48 @@ class class_analysis_mo_ra:
             self.savename=''
         if self.save2motionpath==None:
             self.save2motionpath = './'
+        if self.save2rangepath==None:
+            self.save2rangepath = './'
 
-        self.path2_motion_log = self.save2motionpath+'00_motion_ana_processing.log'
-        self.path2_range_log = self.save2rangepath+'00_range_ana_processing.log'
+        self.path2_motion_processing_log = self.save2motionpath+'00_motion_ana_processing.log'
+        self.path2_range_processing_log = self.save2rangepath+'00_range_ana_processing.log'
 
         self.voilist = []
         self.writelinesinfo=[]
 
-    def fun_analysis_motion(self,motionlist):  # dose_shown_in_gd is the dose written in the exec file, for SPHIC momi cases this value was set to 3 for all plans.
-        print('-m actived. start motion analysis, dat file written in ./motion_ana_logs/00_motion_ana.dat')
+    def fun_analysis_motion(self,motionlist):
+        # dose_shown_in_gd is the dose written in the exec file, for SPHIC momi cases this value was
+        # set to 3 for all plans.
+        print('-m actived. start motion analysis, dat file written in ',self.save2motionpath)
         path2planmotionlogs = []
         if not ('4D' in self.logdimlist):
             writeloginfo='no 4D motion file found, please check'
-            relate_funs.writelog(self.path2_motion_log, writeloginfo)
+            relate_funs.writelog(self.path2_motion_processing_log, writeloginfo)
             sys.exit()
         for i in range(0,len(self.loglist)):
             if '4D' in self.logdimlist[i]:
-                path2planmotionlogs.append(self.loglist[i])
-
-        writedata=''
-        relate_funs.writelog(self.path2_motion_log, 'Start a new motion analysis')
-        writeloginfo = 'running patient: ' + self.patientID + ' plan: ' + self.planname
-        relate_funs.writelog(self.path2_motion_log, writeloginfo)
+                path2planmotionlogs.append(self.loglist[i]) # put 4D log list into path2planmotionlogs
+        # write log
+        writeloginfo = 'Start a new motion analysis\n running patient: ' + self.patientID + ' plan: ' + self.planname
+        relate_funs.writelog(self.path2_motion_processing_log, writeloginfo)
 
         # write analysis data
+        #writedata = 'ID planname Organ States'+(i for i in self.statelist)+'\n'
+        writedata = 'ID planname Organ '+''.join('State' + x + ' ' for x in self.statelist)
         for path2planmotionlogfile in path2planmotionlogs:
             for oarname in motionlist:
-                writedata += self.patientID + ' ' + self.planname + ' ' + oarname
+                writedata += ' '+self.patientID + ' ' + self.planname + ' ' + oarname
                 for statename in self.statelist:
                     #writedata+=' state'+statename+' '
-                    motiondata = self.fun_motion_info(path2planmotionlogfile,oarname, statename)
+                    motiondata = self.fun_motion_info(path2planmotionlogfile , oarname, statename)
                     if motiondata==' 9999':
                         errorinfo='motion states wrongly defined. Please check.'
-                        relate_funs.writelog(self.path2_motion_log, errorinfo)
+                        relate_funs.writelog(self.path2_motion_processing_log, errorinfo)
                     writedata += motiondata
                 writedata += '\n'
         # save info and analysis data
         save_motion_filename=self.save2motionpath+self.patientID+'_'+self.planname+'_'+self.savename+'_motion.txt'
+
         with open(save_motion_filename, 'w+') as savefileinfo:
             # savefileinfo.writelines('patientID plan VOI volume pre_dose parameter 3D 4D1 4D2 4D3 ...')
             savefileinfo.writelines(writedata)
@@ -73,16 +78,14 @@ class class_analysis_mo_ra:
                     if oarname in data_to_ana_list:
                         average_motion=data_to_ana[data_to_ana.rfind(':')+1:-3]
         return average_motion
-
     def fun_analysis_range(self,rangefield):
-        print('-r actived. start range analysis, dat file written in ./range_ana_logs/01_range_ana.dat')
-        writedata=''
-        relate_funs.writelog(self.path2_range_log, 'Start a new range analysis')
+        print('-r actived. start range analysis, dat file written in '+self.save2rangepath)
         # write log
-        writeloginfo = 'running patient: ' + self.patientID + ' plan: ' + self.planname
-        relate_funs.writelog(self.path2_range_log, writeloginfo)
+        writeloginfo = 'Start a new range analysis\nrunning patient: ' + self.patientID + ' plan: ' + self.planname
+        relate_funs.writelog(self.path2_range_processing_log, writeloginfo)
         # write analysis data
 
+        writedata = 'ID planname field '+' '.join(i+'_mean'+i+'_SD' for i in self.logdimlist)
         for fieldname in rangefield:
             writedata += self.patientID + ' ' + self.planname + ' field'
             writedata += fieldname
@@ -96,14 +99,15 @@ class class_analysis_mo_ra:
                     average_range0, standerror_range0 = self.fun_4Drange_info(fieldname,self.loglist[logfileNo], '0')
                     writedata += average_range0 + standerror_range0
                     for statename in self.statelist:
-                        average_range,standerror_range = self.fun_4Drange_info(fieldname,self.loglist[logfileNo], statename)
-                        if average_range == '9999' or standerror_range == '9999':
-                            errorinfo = 'either motion states or Field name wrongly defined. Please check.'
-                            relate_funs.writelog(self.path2_range_log, errorinfo)
-                        writedata += average_range+standerror_range
+                        if statename != '0':
+                            average_range,standerror_range = self.fun_4Drange_info(fieldname,self.loglist[logfileNo], statename)
+                            if average_range == '9999' or standerror_range == '9999':
+                                errorinfo = 'either motion states or Field name wrongly defined. Please check.'
+                                relate_funs.writelog(self.path2_range_processing_log, errorinfo)
+                            writedata += average_range+standerror_range
                 else:
                     errorinfo = 'logfile dimension not known!'
-                    relate_funs.writelog(self.path2_range_log, errorinfo)
+                    relate_funs.writelog(self.path2_range_processing_log, errorinfo)
             writedata += '\n'
 
         # save info and analysis data

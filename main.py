@@ -11,8 +11,8 @@ if __name__=="__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-i","--patientID", required=False, help="IDcd . of the patient")
     parser.add_argument("-p","--planname", required=False, help="name of the specific plan")
-    parser.add_argument("-lp", "--logpath", required=False, help="path of the log file?(exp: ./1.log,./2.log,./3.log)")
-    parser.add_argument("-ld", "--logdim", required=False, help="the log file is 3D or 4D?(exp: 3D,4D,4D)")
+    parser.add_argument("-lp", "--logpath", required=True, help="path of the log file?(exp: ./1.log,./2.log,./3.log)")
+    parser.add_argument("-ld", "--logdim", required=True, help="the log file is 3D or 4D?(exp: 3D,4D,4D)")
     parser.add_argument("-m","--motionlist", required=False, help="Target/OAR name list to be analysised for motion")
     parser.add_argument("-r", "--rangefield", required=False, help="analysis range for which field name?")
     parser.add_argument("-s", "--statelist", required=False, help="which state to analysis motion and/or range <for range ana, state 0 is forced to analysis>")
@@ -43,6 +43,7 @@ if __name__=="__main__":
     except:
         loglist=[]
         loglist.append(args.logpath)
+
     try:
         logdimlist=args.logdim.split(',')
     except:
