@@ -90,12 +90,12 @@ class class_analysis_mo_ra:
             writedata += self.patientID + ' ' + self.planname + ' field'
             writedata += fieldname
             for logfileNo in range(0,len(self.loglist)):
-                if self.logdimlist[logfileNo]=='3D':
+                if '3D' in self.logdimlist[logfileNo]:
                 # write 3D plan range info for field N
                     average_range3D, standerror_range3D = self.fun_3Drange_info(fieldname,self.loglist[logfileNo])
                     writedata += average_range3D + standerror_range3D
                 # write 4D range info for field N
-                elif self.logdimlist[logfileNo]=='4D':
+                elif '4D' in self.logdimlist[logfileNo]:
                     average_range0, standerror_range0 = self.fun_4Drange_info(fieldname,self.loglist[logfileNo], '0')
                     writedata += average_range0 + standerror_range0
                     for statename in self.statelist:
@@ -106,7 +106,7 @@ class class_analysis_mo_ra:
                                 relate_funs.writelog(self.path2_range_processing_log, errorinfo)
                             writedata += average_range+standerror_range
                 else:
-                    errorinfo = 'logfile dimension not known!'
+                    errorinfo = 'Error logfile dimension not known!'
                     relate_funs.writelog(self.path2_range_processing_log, errorinfo)
             writedata += '\n'
 
