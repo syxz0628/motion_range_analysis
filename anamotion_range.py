@@ -91,7 +91,7 @@ class class_analysis_mo_ra:
         relate_funs.writelog(self.path2_range_processing_log, writeloginfo)
         # write analysis data
 
-        writedata = 'ID planname field '+' '.join(i+'_mean SD' for i in self.logdimlist)
+        writedata = 'ID planname field '+' '.join(i+'_mean SD (phase 0 1 9)' for i in self.logdimlist)
         writedata += '\n'
         for fieldname in rangefield:
             writedata += self.patientID + ' ' + self.planname + ' field'
