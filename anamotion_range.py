@@ -92,6 +92,7 @@ class class_analysis_mo_ra:
         # write analysis data
 
         writedata = 'ID planname field '+' '.join(i+'_mean SD' for i in self.logdimlist)
+        writedata += '\n'
         for fieldname in rangefield:
             writedata += self.patientID + ' ' + self.planname + ' field'
             writedata += fieldname
