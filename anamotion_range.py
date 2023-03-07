@@ -54,6 +54,7 @@ class class_analysis_mo_ra:
         for logfilelist in self.logdimlist:
             for States in self.statelist:
                 writedata += logfilelist+"_State"+States+' '
+        writedata += '\n'
 
         for oarname in motionlist:
             writedata += ' ' + self.patientID + ' ' + self.planname + ' ' + oarname
