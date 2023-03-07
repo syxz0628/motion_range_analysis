@@ -50,18 +50,22 @@ class class_analysis_mo_ra:
 
         # write analysis data
         #writedata = 'ID planname Organ States'+(i for i in self.statelist)+'\n'
-        writedata = 'ID planname Organ '+''.join('State' + x + ' ' for x in self.statelist)
-        for path2planmotionlogfile in path2planmotionlogs:
-            for oarname in motionlist:
-                writedata += ' '+self.patientID + ' ' + self.planname + ' ' + oarname
+        writedata = 'ID planname Organ '
+        for logfilelist in self.logdimlist:
+            for States in self.statelist:
+                writedata += logfilelist+"_State"+States+' '
+
+        for oarname in motionlist:
+            writedata += ' ' + self.patientID + ' ' + self.planname + ' ' + oarname
+            for path2planmotionlogfile in path2planmotionlogs:
                 for statename in self.statelist:
-                    #writedata+=' state'+statename+' '
-                    motiondata = self.fun_motion_info(path2planmotionlogfile , oarname, statename)
-                    if motiondata==' 9999':
-                        errorinfo='motion states wrongly defined. Please check.'
-                        relate_funs.writelog(self.path2_motion_processing_log, errorinfo)
+                    motiondata = self.fun_motion_info(path2planmotionlogfile, oarname, statename)
                     writedata += motiondata
-                writedata += '\n'
+                    if motiondata==' 9999':
+                        errorinfo='Please check:'+path2planmotionlogfile+' '+oarname+' phase'+statename
+                        relate_funs.writelog(self.path2_motion_processing_log, errorinfo)
+            writedata += '\n'
+
         # save info and analysis data
         save_motion_filename=self.save2motionpath+self.patientID+'_'+self.planname+'_'+self.savename+'_motion.txt'
 
