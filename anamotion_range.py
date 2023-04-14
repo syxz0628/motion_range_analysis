@@ -50,10 +50,11 @@ class class_analysis_mo_ra:
 
         # write analysis data
         #writedata = 'ID planname Organ States'+(i for i in self.statelist)+'\n'
-        writedata = 'ID planname Organ '
+        writedata = '00ID 00planname 00Organ '
         for logfilelist in self.logdimlist:
             for States in self.statelist:
-                writedata += logfilelist+"_State"+States+' '
+                if '4D' in logfilelist:
+                    writedata += logfilelist+"_State"+States+' '
         writedata += '\n'
 
         for oarname in motionlist:
