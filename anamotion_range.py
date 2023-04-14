@@ -98,6 +98,7 @@ class class_analysis_mo_ra:
             elif '4D' in self.logdimlist[logfileNo]:
                 writedata += ' '.join(self.logdimlist[logfileNo] + 'mean_mm_state'+j+' ' + self.logdimlist[logfileNo] + 'SD_mm_state'+j \
                             for j in self.statelist)
+                writedata += ' '
         writedata += '\n'
         for fieldname in rangefield:
             writedata += self.patientID + ' ' + self.planname + ' field'
