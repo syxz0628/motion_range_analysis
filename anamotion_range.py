@@ -58,7 +58,7 @@ class class_analysis_mo_ra:
         writedata += '\n'
 
         for oarname in motionlist:
-            writedata += ' ' + self.patientID + ' ' + self.planname + ' ' + oarname
+            writedata += self.patientID + ' ' + self.planname + ' ' + oarname
             for path2planmotionlogfile in path2planmotionlogs:
                 for statename in self.statelist:
                     motiondata = self.fun_motion_info(path2planmotionlogfile, oarname, statename)
