@@ -94,9 +94,9 @@ class class_analysis_mo_ra:
         writedata = '00_ID 00_Planname 00_field '
         for logfileNo in range(0, len(self.logdimlist)):
             if '3D' in self.logdimlist[logfileNo]:
-                writedata += self.logdimlist[logfileNo] + '_mean_mm ' + self.logdimlist[logfileNo] + 'SD_mm'
+                writedata += self.logdimlist[logfileNo] + 'mean_mm ' + self.logdimlist[logfileNo] + 'SD_mm '
             elif '4D' in self.logdimlist[logfileNo]:
-                writedata += ' '.join(self.logdimlist[logfileNo] + '_mean_mm_state'+j+' ' + self.logdimlist[logfileNo] + 'SD_mm_state'+j \
+                writedata += ' '.join(self.logdimlist[logfileNo] + 'mean_mm_state'+j+' ' + self.logdimlist[logfileNo] + 'SD_mm_state'+j \
                             for j in self.statelist)
         writedata += '\n'
         for fieldname in rangefield:
