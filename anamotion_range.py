@@ -92,7 +92,12 @@ class class_analysis_mo_ra:
         relate_funs.writelog(self.path2_range_processing_log, writeloginfo)
         # write analysis data
         writedata = '00_ID 00_Planname 00_field '
-        writedata += ' '.join(i+'_mean_mm '+i+'SD_mm' for i in self.logdimlist)
+        for logfileNo in range(0, len(self.loglist)):
+            if '3D' in self.logdimlist[logfileNo]:
+                writedata += ' '.join(i + '_mean_mm ' + i + 'SD_mm' for i in self.logdimlist)
+            elif '4D' in self.logdimlist[logfileNo]:
+                for statename in self.statelist:
+                    writedata += ' '.join(i + '_mean_mm_state'+j+' ' + i + 'SD_mm_state'+j for i,j in zip(self.logdimlist,self.statelist))
         writedata += '\n'
         for fieldname in rangefield:
             writedata += self.patientID + ' ' + self.planname + ' field'
