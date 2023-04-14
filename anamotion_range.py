@@ -96,6 +96,7 @@ class class_analysis_mo_ra:
             if '3D' in self.logdimlist[logfileNo]:
                 writedata += self.logdimlist[logfileNo] + 'mean_mm ' + self.logdimlist[logfileNo] + 'SD_mm '
             elif '4D' in self.logdimlist[logfileNo]:
+                writedata += self.logdimlist[logfileNo] + 'mean_mm_state0 ' + self.logdimlist[logfileNo] + 'SD_mm_state0 '
                 writedata += ' '.join(self.logdimlist[logfileNo] + 'mean_mm_state'+j+' ' + self.logdimlist[logfileNo] + 'SD_mm_state'+j \
                             for j in self.statelist)
                 writedata += ' '
