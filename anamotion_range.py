@@ -50,7 +50,7 @@ class class_analysis_mo_ra:
 
         # write analysis data
         #writedata = 'ID planname Organ States'+(i for i in self.statelist)+'\n'
-        writedata = '00ID 00planname 00Organ '
+        writedata = '00_ID 00_Planname 00_OAR/Tname '
         for logfilelist in self.logdimlist:
             for States in self.statelist:
                 if '4D' in logfilelist:
@@ -91,8 +91,8 @@ class class_analysis_mo_ra:
         writeloginfo = 'Start a new range analysis\nrunning patient: ' + self.patientID + ' plan: ' + self.planname
         relate_funs.writelog(self.path2_range_processing_log, writeloginfo)
         # write analysis data
-
-        writedata = 'ID planname field '+' '.join(i+'_mean SD (phase 0 1 9)' for i in self.logdimlist)
+        writedata = '00_ID 00_Planname 00_field '
+        writedata += ' '.join(i+'_mean_mm '+i+'SD_mm' for i in self.logdimlist)
         writedata += '\n'
         for fieldname in rangefield:
             writedata += self.patientID + ' ' + self.planname + ' field'
